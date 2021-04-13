@@ -10,6 +10,7 @@ import {
 } from '../firebase/client'
 
 import { color } from '../styles/theme'
+import { Avatar } from '../components/Avatar/Avatar';
  
 export default function Home() {
 
@@ -44,7 +45,7 @@ export default function Home() {
           <h2>
               Talk about development <br/> with developers
           </h2>
-          <div>
+           <div>
           {
               user === null &&
                 <Button onClick={handleClick}>
@@ -53,11 +54,11 @@ export default function Home() {
                 </Button>
             }
             {
-              user && user.avatar && <div>
-                <img src={user.avatar} />
-                <strong>{user.username}</strong>
+              user && user.avatar && (
+              <div>
+                <Avatar src={ user.avatar } alt={user.username} />
               </div>
-            }
+            )}
           </div>
         </section>
       </Layout>
