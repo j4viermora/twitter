@@ -1,12 +1,33 @@
+import { useState, useEffect } from 'react';
 import Head from 'next/head'
 import Layout from '../components/appLayout/Layout'
+
 import Button from '../components/Button'
 import GitHub from '../components/icons'
-import { color } from '../styles/theme'
-// devit
+import {
+  loginWithGitHub,
+  onAuthStateChanged
+} from '../firebase/client'
 
+import { color } from '../styles/theme'
+ 
 export default function Home() {
 
+
+    const [user, setUser] = useState(undefined)
+    
+    useEffect(() => {
+      onAuthStateChanged(setUser)
+    }, [])
+  
+    const handleClick = () => {
+      loginWithGitHub().then(setUser).catch(err => {
+        console.log(err)
+      })
+    }
+  
+
+  
   return (
     <>
       <Head>
@@ -23,10 +44,21 @@ export default function Home() {
           <h2>
               Talk about development <br/> with developers
           </h2>
-          <Button>
-            <GitHub width={24} height={ 24 } fill="#fff" />
-            Login with Github
-          </Button>
+          <div>
+          {
+              user === null &&
+                <Button onClick={handleClick}>
+                  <GitHub fill='#fff' width={24} height={24} />
+                  Login with GitHub
+                </Button>
+            }
+            {
+              user && user.avatar && <div>
+                <img src={user.avatar} />
+                <strong>{user.username}</strong>
+              </div>
+            }
+          </div>
         </section>
       </Layout>
 
@@ -35,6 +67,7 @@ export default function Home() {
           color:${color.secondary};
           font-size: 48px;
           font-weight: 800;
+          margin: 0
         }  
         section{
           display: grid;
