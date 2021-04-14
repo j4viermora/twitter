@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head'
-import Layout from '../components/appLayout/Layout'
+import Layout from 'components/appLayout/Layout'
 
-import Button from '../components/Button'
-import GitHub from '../components/icons'
+import Button from 'components/Button'
+import GitHub from 'components/icons'
 import {
   loginWithGitHub,
   onAuthStateChanged
 } from '../firebase/client'
 
-import { color } from '../styles/theme'
-import { Avatar } from '../components/Avatar/Avatar';
+import { color } from 'styles/theme'
+import { Avatar } from 'components/Avatar/Avatar';
  
-export default function Home() {
+export default function Index() {
 
 
     const [user, setUser] = useState(undefined)
@@ -27,9 +27,7 @@ export default function Home() {
       })
     }
   
-
-  
-  return (
+return (
     <>
       <Head>
         <title>Hobby tuit</title>
@@ -56,7 +54,12 @@ export default function Home() {
             {
               user && user.avatar && (
               <div>
-                <Avatar src={ user.avatar } alt={user.username} />
+                <Avatar 
+                src={ user.avatar } 
+                alt={user.username}
+                text={ user.username }
+                withText
+                />
               </div>
             )}
           </div>
