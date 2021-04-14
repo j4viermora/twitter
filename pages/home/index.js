@@ -43,7 +43,7 @@ export default function Home(){
                 }
 
                 section{
-                    padding-top: 100px
+                    padding-top: 49px
                 }
 
             `}</style>
