@@ -11,16 +11,21 @@ const firebaseConfig = {
   };
 
 !firebase.apps.length &&
-  firebase.initializeApp(firebaseConfig)
+firebase.initializeApp(firebaseConfig)
+
+const db = firebase.firestore();
+
 
 const mapUserFromFirebaseAuthToUser = (user) => {
-    console.log(user)
-  const {displayName, email, photoURL } = user
+   
+  // console.log(user)
+  const {displayName, email, photoURL, uid } = user
 
   return {
     avatar: photoURL,
     username: displayName,
-    email
+    email,
+    uid
   }
 }
 
@@ -39,4 +44,43 @@ export const loginWithGitHub = () => {
   return firebase
     .auth()
     .signInWithPopup(githubProvider)
+}
+
+
+export const addPost = ({ avatar, content, userId, userName }) => {
+
+          return db.collection('tweets').add({
+            avatar, 
+            content, 
+            userId, 
+            userName,
+            createdAt: firebase.firestore.Timestamp.fromDate( new Date() ),
+            likeCount: 0,
+            sharedCount: 0,
+          })
+}
+
+export const fetchLastedDevid = () => {
+
+        return db.collection('tweets')
+                 .get()
+                 .then( ( snapShot ) =>{
+
+                    return snapShot.docs.map( doc => {
+                      
+                      const data = doc.data();
+                      const id = doc.id;
+                      const { createdAt } = data;
+                      const normalizedCreatedAt = new Date( createdAt.seconds * 1000 ).toString();
+
+                      return {
+                        ...data,
+                        id,
+                        createdAt: normalizedCreatedAt,
+                      }
+                    } )
+
+                 })
+
+
 }

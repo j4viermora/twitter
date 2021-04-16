@@ -3,22 +3,20 @@ import Layout from "components/appLayout/Layout";
 import { HobbyTuit } from "components/hobbytuit";
 import { color } from "styles/theme";
 import { useUser } from "hooks/useUser";
+import { fetchLastedDevid } from "firebase/client";
 
 export default function Home(){
     
     const [ timeline, setTimeline ] = useState([]);
     const user = useUser()  
-   
+
+    console.log(timeline)
+
     useEffect( () => {
 
-        user &&
-        fetch("http://localhost:3000/api/statuses/home_timeline" )
-        .then( resp => resp.json() )
-        .then( resp => {
-            setTimeline(resp)
-            console.log(resp)
-        } )
-
+       user && fetchLastedDevid()
+               .then( setTimeline )
+                .catch( console.log )
     }, [ user ] )
 
 
@@ -34,11 +32,13 @@ export default function Home(){
                     {
                         timeline?.map( tuit => (
                             <HobbyTuit
-                                key={ tuit.id }
                                 avatar={ tuit.avatar }
-                                message={ tuit.message }
+                                content={ tuit.content }
+                                createdAt={ tuit.createdAt }
                                 id={ tuit.id }
-                                username={ tuit.username }                            
+                                key={ tuit.id }
+                                userId={ tuit.userId }
+                                userName={ tuit.userName }  
                             />
                         ))
                     }

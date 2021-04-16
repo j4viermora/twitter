@@ -2,7 +2,7 @@ import { Avatar } from 'components/Avatar/Avatar'
 import React from 'react'
 import { color } from 'styles/theme'
 
-export const HobbyTuit = ({ avatar, id, username, message  }) => {
+export const HobbyTuit = ({ avatar, id, userName, content, createdAt  }) => {
    
 
     return (
@@ -12,8 +12,9 @@ export const HobbyTuit = ({ avatar, id, username, message  }) => {
                 <Avatar src={ avatar } />
             </div>
             <section>
-                <strong>{ username }</strong>
-                <p>{ message }</p>
+                <strong>{ userName }</strong>
+                <data>{ createdAt }</data>
+                <p>{ content }</p>
             </section>
         </article>
 
