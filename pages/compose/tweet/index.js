@@ -1,12 +1,11 @@
 import Button from 'components/Button'
 import Layout from 'components/appLayout/Layout'
 import React, { useState } from 'react'
+import { useUser } from 'hooks/useUser'
 
 export default function CreateTuit(){
     
-    const [ user, setUser ] = useState();
-    
-    
+    const user = useUser()
     
     return (
         <>  

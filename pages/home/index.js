@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import Layout from "components/appLayout/Layout";
 import { HobbyTuit } from "components/hobbytuit";
 import { color } from "styles/theme";
+import { useUser } from "hooks/useUser";
 
 export default function Home(){
     
     const [ timeline, setTimeline ] = useState([]);
-    
+    const user = useUser()  
+   
     useEffect( () => {
 
+        user &&
         fetch("http://localhost:3000/api/statuses/home_timeline" )
         .then( resp => resp.json() )
         .then( resp => {
@@ -16,7 +19,7 @@ export default function Home(){
             console.log(resp)
         } )
 
-    }, [] )
+    }, [ user ] )
 
 
     return(
