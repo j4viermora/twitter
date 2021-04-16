@@ -1,9 +1,14 @@
 import { Avatar } from 'components/Avatar/Avatar'
+import useTimeAgo from 'hooks/useTimeAgo'
 import React from 'react'
 import { color } from 'styles/theme'
 
 export const HobbyTuit = ({ avatar, id, userName, content, createdAt  }) => {
-   
+    
+
+
+
+    const timestamp = useTimeAgo( createdAt )
 
     return (
         <>
@@ -13,7 +18,8 @@ export const HobbyTuit = ({ avatar, id, userName, content, createdAt  }) => {
             </div>
             <section>
                 <strong>{ userName }</strong>
-                <data>{ createdAt }</data>
+                <span> - </span>
+                <data>{ timestamp }</data>
                 <p>{ content }</p>
             </section>
         </article>

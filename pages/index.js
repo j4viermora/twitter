@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Layout from 'components/appLayout/Layout'
 
 import Button from 'components/Button'
-import GitHub from 'components/icons'
+import GitHub from 'components/icons/GitHub'
 import {
   loginWithGitHub,
 } from 'firebase/client'

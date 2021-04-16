@@ -63,6 +63,7 @@ export const addPost = ({ avatar, content, userId, userName }) => {
 export const fetchLastedDevid = () => {
 
         return db.collection('tweets')
+                 .orderBy("createdAt", "desc")
                  .get()
                  .then( ( snapShot ) =>{
 
@@ -71,12 +72,12 @@ export const fetchLastedDevid = () => {
                       const data = doc.data();
                       const id = doc.id;
                       const { createdAt } = data;
-                      const normalizedCreatedAt = new Date( createdAt.seconds * 1000 ).toString();
+                      
 
                       return {
                         ...data,
                         id,
-                        createdAt: normalizedCreatedAt,
+                      createdAt: +createdAt.toDate(),
                       }
                     } )
 
