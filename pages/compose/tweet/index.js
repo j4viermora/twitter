@@ -15,6 +15,8 @@ const COMPOSE_STATES = {
 
 };
 
+import Head from 'next/head'
+
 
 export default function CreateTuit(){
     
@@ -47,6 +49,9 @@ export default function CreateTuit(){
 
     return (
         <>  
+            <Head>
+                <title>Crear Tweet</title>
+            </Head>
             <Layout>
                 <form onSubmit={ handleSubmit }>
                     <textarea 

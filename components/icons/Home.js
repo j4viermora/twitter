@@ -1,6 +1,6 @@
 import * as React from "react"
 
-export default function Create(props) {
+export default function Home(props) {
   return (
     <svg height={21} viewBox="0 0 21 21" width={21} {...props}>
       <g
@@ -9,8 +9,7 @@ export default function Create(props) {
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M10 4.5H5.5a2 2 0 00-2 2v9a2 2 0 002 2h10a2 2 0 002-2V11" />
-        <path d="M17.5 3.467a1.462 1.462 0 01-.017 2.05L10.5 12.5l-3 1 1-3 6.987-7.046a1.409 1.409 0 012.013.013zM15.5 5.5l.953 1" />
+        <path d="M3.5 14.5V7.236a2 2 0 011.106-1.789l5-2.5a2 2 0 011.788 0l5 2.5a2 2 0 011.106 1.79V14.5a2 2 0 01-2 2h-10a2 2 0 01-2-2zM7.5 10.5h6M10.5 13.5v-6" />
       </g>
     </svg>
   )
