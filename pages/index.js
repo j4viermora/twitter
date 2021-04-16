@@ -7,22 +7,34 @@ import GitHub from 'components/icons'
 import {
   loginWithGitHub,
   onAuthStateChanged
-} from '../firebase/client'
+} from 'firebase/client'
 
-import { color } from 'styles/theme'
-import { Avatar } from 'components/Avatar/Avatar';
+import { color } from 'styles/theme';
+
+import { useRouter } from 'next/router';
  
 export default function Index() {
 
+    const USER_STATE = {
+      NOT_LOGGED: null,
+      NOT_KNOW: undefined
+    }
+
+    const router = useRouter()
 
     const [user, setUser] = useState(undefined)
     
     useEffect(() => {
       onAuthStateChanged(setUser)
-    }, [])
+    }, []);
+
+    useEffect( ()=> {
+      user && router.replace( '/home');
+    }, [ user ]);
   
     const handleClick = () => {
-      loginWithGitHub().then(setUser).catch(err => {
+      loginWithGitHub()
+      .catch(err => {
         console.log(err)
       })
     }
@@ -45,22 +57,15 @@ return (
           </h2>
            <div>
           {
-              user === null &&
+              user === USER_STATE.NOT_LOGGED &&
                 <Button onClick={handleClick}>
                   <GitHub fill='#fff' width={24} height={24} />
                   Login with GitHub
                 </Button>
             }
             {
-              user && user.avatar && (
-              <div>
-                <Avatar 
-                src={ user.avatar } 
-                alt={user.username}
-                text={ user.username }
-                withText
-                />
-              </div>
+              user === USER_STATE.NOT_KNOW && (
+               <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />
             )}
           </div>
         </section>

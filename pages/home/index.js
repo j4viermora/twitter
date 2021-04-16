@@ -1,6 +1,24 @@
+import { useEffect, useState } from "react";
 import Layout from "components/appLayout/Layout";
+import { HobbyTuit } from "components/hobbytuit";
+import { color } from "styles/theme";
 
 export default function Home(){
+    
+    const [ timeline, setTimeline ] = useState([]);
+    
+    useEffect( () => {
+
+        fetch("http://localhost:3000/api/statuses/home_timeline" )
+        .then( resp => resp.json() )
+        .then( resp => {
+            setTimeline(resp)
+            console.log(resp)
+        } )
+
+    }, [] )
+
+
     return(
         <>
             <Layout>
@@ -10,7 +28,17 @@ export default function Home(){
                     </h2>
                 </header>
                 <section>
-
+                    {
+                        timeline?.map( tuit => (
+                            <HobbyTuit
+                                key={ tuit.id }
+                                avatar={ tuit.avatar }
+                                message={ tuit.message }
+                                id={ tuit.id }
+                                username={ tuit.username }                            
+                            />
+                        ))
+                    }
                 </section>
                 <nav>
 
@@ -26,24 +54,23 @@ export default function Home(){
 
                 header{
                     align-items: center;
+                    background: #ffffffaa;
+                    backdrop-filter: blur(5px);
                     display: flex;
-                    border-bottom: 1px solid #ccc;
+                    border-bottom: 1px solid ${ color.light };
                     height: 49px;
-                    position: fixed;
+                    position: sticky;
                     top: 0;
                     width: 100%;
                 }
 
                 nav{
                     bottom: 0;
-                    border-top: 1px solid #ccc;
+                    background: #fff;
+                    border-top: 1px solid ${ color.light };
                     height: 49px;
-                    position: fixed;
+                    position: sticky;
                     width: 100%;
-                }
-
-                section{
-                    padding-top: 49px
                 }
 
             `}</style>
