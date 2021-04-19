@@ -1,3 +1,6 @@
+// this file extract one function, calculate the time age 
+
+
 const DATE_UNITS = [
     [ 'day', 86400],
     ['hour', 3600],

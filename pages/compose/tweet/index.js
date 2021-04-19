@@ -1,9 +1,9 @@
 import Button from 'components/Button'
 import Layout from 'components/appLayout/Layout'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useUser } from 'hooks/useUser'
 
-import { addPost } from 'firebase/client'
+import { addPost, uploadImage } from 'firebase/client'
 import { useRouter } from 'next/router';
 
 const COMPOSE_STATES = {
@@ -15,17 +15,54 @@ const COMPOSE_STATES = {
 
 };
 
+const DRAG_IMAGE_STATE = {
+
+    ERROR: -1,
+    NONE: 0,
+    DRAG_OVER: 1,
+    UPLOUDING: 2,
+    COMPLETE: 3,
+
+}
+
 import Head from 'next/head'
+import { Image } from 'components/image'
 
 
 export default function CreateTuit(){
     
 
-    const router = useRouter()
+    const router = useRouter();
+    
+    const [ drag, setDrag ] = useState( DRAG_IMAGE_STATE.NONE );
+    const [ task, setTask ] = useState( null );
+    const [ imageURL, setImageURL ] = useState( null );
+
 
     const user = useUser();
     const [ message, setMessage ] = useState('')
     const [ status, setStatus ] = useState( COMPOSE_STATES.USER_NOT_KNOW )
+
+    useEffect(() => {
+
+        let onProgress = () => {}
+        let onError = () => {}
+        let onComplete = () => {
+            console.log('complete')
+            task.snapshot.ref.getDownloadURL().then( setImageURL )
+        }
+
+        if( task ){
+            task.on('state_changed',
+            onProgress,
+            onError, 
+            onComplete,
+
+            )
+        }
+
+    }, [ task ])
+
 
     const isMessageEmpty = !message.length || COMPOSE_STATES.LOADING === status;
 
@@ -47,6 +84,27 @@ export default function CreateTuit(){
         })
     }
 
+    const handleDragEnter =( e ) => {
+        setDrag( DRAG_IMAGE_STATE.DRAG_OVER ) 
+    }
+    const handleDragLeave =( e ) => {     
+        setDrag( DRAG_IMAGE_STATE.NONE ) 
+    }
+    const handleDrop =( e ) => {
+        e.preventDefault()
+        setDrag( DRAG_IMAGE_STATE.NONE ) 
+
+        const file = e.dataTransfer.files[0];
+        console.log(e.dataTransfer.files[0])
+
+        const task = uploadImage( file ) 
+
+        setTask( task )
+    }
+
+
+
+
     return (
         <>  
             <Head>
@@ -55,11 +113,16 @@ export default function CreateTuit(){
             <Layout>
                 <form onSubmit={ handleSubmit }>
                     <textarea 
-                    placeholder="¿Que esta pasando?" 
                     name="message"
+                    onChange={ handleChange }
+                    onDragEnter={ handleDragEnter }
+                    onDragLeave={ handleDragLeave }
+                    onDrop={ handleDrop }
+                    placeholder="¿Que esta pasando?" 
                     value={ message }
-                    onChange={ handleChange }>
+                    >
                     </textarea>
+                    { imageURL && <Image src={ imageURL } alt={ imageURL } onClick={ setImageURL } /> }
                     <div>
                         <Button
                         type="submit"
@@ -76,8 +139,15 @@ export default function CreateTuit(){
                 padding: 15px;
             }
 
+            form{
+                padding: 10px;
+            }
+
             textarea {
-                border: 0;
+                border:${drag === DRAG_IMAGE_STATE.DRAG_OVER
+                            ? "3px dashed #09f"
+                            : "3px solid transparent"};
+                border-radius: 10px;
                 font-size: 21px;
                 padding: 15px;
                 outline: 0;
@@ -86,6 +156,16 @@ export default function CreateTuit(){
                 width: 100%;
                 
             }
+
+            img{
+                width: 100%;
+                border-radius: 15px;
+                height: auto;
+            }
+
+            
+
+
             `}</style>   
         </>
     )
