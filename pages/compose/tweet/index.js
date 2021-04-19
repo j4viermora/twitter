@@ -6,6 +6,8 @@ import { useUser } from 'hooks/useUser'
 import { addPost, uploadImage } from 'firebase/client'
 import { useRouter } from 'next/router';
 
+import { color } from 'styles/theme';
+
 const COMPOSE_STATES = {
 
     USER_NOT_KNOW: 0,
@@ -61,9 +63,11 @@ export default function CreateTuit(){
             )
         }
 
+        console.log(  )
+
     }, [ task ])
 
-
+    const inputFile = React.useRef();
     const isMessageEmpty = !message.length || COMPOSE_STATES.LOADING === status;
 
     const handleChange = ( { target } ) => {
@@ -102,6 +106,24 @@ export default function CreateTuit(){
         setTask( task )
     }
 
+    const handleFielChange = (e) => {
+
+        console.log( e )
+        setDrag( DRAG_IMAGE_STATE.NONE ) 
+
+        const file = e.target.files[0];
+        console.log(e.target.files[0])
+
+        const task = uploadImage( file ) 
+
+        setTask( task )
+
+    }
+
+    const handleClickFile = ( e ) => {    
+        e.preventDefault()
+        console.log( inputFile.current.click() )
+    }
 
 
 
@@ -122,7 +144,7 @@ export default function CreateTuit(){
                     value={ message }
                     >
                     </textarea>
-                    { imageURL && <Image src={ imageURL } alt={ imageURL } onClick={ setImageURL } /> }
+                    { imageURL && <Image src={ imageURL } alt={ imageURL } setImageURL={ setImageURL } /> }
                     <div>
                         <Button
                         type="submit"
@@ -130,13 +152,34 @@ export default function CreateTuit(){
                         >
                             Publicar
                         </Button>
+                        <input 
+                        style={ { display: "none" } }
+                        type="file"
+                        ref={ inputFile }
+                        onChange={ handleFielChange }
+                        />
+                        <button
+                         onClick={ handleClickFile } >
+                        Subir Archivo
+                        </button>
                     </div>
                 </form>
             </Layout>
             <style jsx>{`
+            
+            button{
+                border: 0;
+                border-radius: 49px;
+                backgroud: ${ color.primary };
+                padding: 12px 12px;
+                cursor: pointer;
+            }
 
             div{
                 padding: 15px;
+                display: flex;
+                justify-content: space-beetwen;
+                align-items: center;
             }
 
             form{
