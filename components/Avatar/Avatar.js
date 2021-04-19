@@ -10,7 +10,7 @@ export const Avatar = ( { src, alt, text, withText } ) => {
                 title={ alt }
                 
                 />
-                  <strong>{ withText && text || alt }</strong>
+                  <strong>{ withText && text }</strong>
             </div>
 
             <style jsx>{`

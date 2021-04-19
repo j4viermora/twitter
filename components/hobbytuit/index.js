@@ -1,9 +1,10 @@
 import { Avatar } from 'components/Avatar/Avatar'
+import { Image } from 'components/image'
 import useTimeAgo from 'hooks/useTimeAgo'
 import React from 'react'
 import { color } from 'styles/theme'
 
-export const HobbyTuit = ({ avatar, id, userName, content, createdAt  }) => {
+export const HobbyTuit = ({ avatar, id, userName, content, createdAt , img }) => {
     
 
 
@@ -21,6 +22,7 @@ export const HobbyTuit = ({ avatar, id, userName, content, createdAt  }) => {
                 <span> - </span>
                 <data>{ timestamp }</data>
                 <p>{ content }</p>
+                { img && <Image src={ img } alt={ img } withoutButton /> }
             </section>
         </article>
 

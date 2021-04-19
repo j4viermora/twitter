@@ -25,6 +25,9 @@ export default function Home(){
        user && fetchLastedDevid()
                .then( setTimeline )
                 .catch( console.log )
+
+        console.log( timeline )
+
     }, [ user ] )
 
 
@@ -49,7 +52,8 @@ export default function Home(){
                                 id={ tuit.id }
                                 key={ tuit.id }
                                 userId={ tuit.userId }
-                                userName={ tuit.userName }  
+                                userName={ tuit.userName }
+                                img={ tuit.img }  
                             />
                         ))
                     }

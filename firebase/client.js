@@ -47,11 +47,12 @@ export const loginWithGitHub = () => {
 }
 
 
-export const addPost = ({ avatar, content, userId, userName }) => {
+export const addPost = ({ avatar, content, userId, userName, img }) => {
 
           return db.collection('tweets').add({
             avatar, 
-            content, 
+            content,
+            img, 
             userId, 
             userName,
             createdAt: firebase.firestore.Timestamp.fromDate( new Date() ),

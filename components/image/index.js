@@ -1,15 +1,16 @@
 
-export const Image = ( { src, alt, setImageURL } ) => {
+export const Image = ( { src, alt, setImageURL, withoutButton } ) => {
     return (
         <>  
             <section>
-                <button onClick={ () => setImageURL( null ) } >x</button>
+                { !withoutButton &&  <button onClick={ () => setImageURL( null ) } >x</button> }
                 <img src={ src } alt={ alt } />
             </section>
             <style jsx>{`
 
                     section{
                         position: relative;
+                        margin-top: 15px
                     }
 
                     button{

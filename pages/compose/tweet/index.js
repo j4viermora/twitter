@@ -29,6 +29,7 @@ const DRAG_IMAGE_STATE = {
 
 import Head from 'next/head'
 import { Image } from 'components/image'
+import { Avatar } from 'components/Avatar/Avatar'
 
 
 export default function CreateTuit(){
@@ -42,6 +43,9 @@ export default function CreateTuit(){
 
 
     const user = useUser();
+
+    console.log(user.avatar)
+
     const [ message, setMessage ] = useState('')
     const [ status, setStatus ] = useState( COMPOSE_STATES.USER_NOT_KNOW )
 
@@ -78,10 +82,13 @@ export default function CreateTuit(){
         setStatus( COMPOSE_STATES.LOADING )
         console.log(message)
         addPost({
+
             avatar: user.avatar,
             content: message,
             userId: user.uid,
             userName: user.username,
+            img: imageURL,
+
         }).then( router.push('/home') ).catch( (err) => {
             console.log(err)
             setStatus( COMPOSE_STATES.ERROR )
@@ -133,6 +140,8 @@ export default function CreateTuit(){
                 <title>Crear Tweet</title>
             </Head>
             <Layout>
+                <section>
+                <Avatar src={ user.avatar } alt={ user.username } />
                 <form onSubmit={ handleSubmit }>
                     <textarea 
                     name="message"
@@ -164,14 +173,21 @@ export default function CreateTuit(){
                         </button>
                     </div>
                 </form>
+                </section>      
             </Layout>
             <style jsx>{`
-            
+
+            section{
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-start;
+            }
+
             button{
                 border: 0;
                 border-radius: 49px;
                 backgroud: ${ color.primary };
-                padding: 12px 12px;
+                padding: 10px 12px;
                 cursor: pointer;
             }
 
@@ -199,16 +215,7 @@ export default function CreateTuit(){
                 width: 100%;
                 
             }
-
-            img{
-                width: 100%;
-                border-radius: 15px;
-                height: auto;
-            }
-
             
-
-
             `}</style>   
         </>
     )
